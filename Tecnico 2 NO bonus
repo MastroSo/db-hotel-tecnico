@@ -1,0 +1,61 @@
+Test Tecnico - Hotel
+
+SELECT
+
+1. 
+Select name, lastname, document_type
+From ospiti
+where document_type = 'CI';
+
+2.
+Select *
+from ospiti
+where YEAR(date_of_birth) > 1988;
+
+3.
+Select *
+from ospiti
+where name LIKE 'D%'
+
+4.
+SELECT SUM(price) AS Totale_incassato
+FROM pagamenti
+where status = 'accepted';
+
+5.
+SELECT MAX(price) as prezzo_massimo_pagato
+FROM pagamenti
+WHERE status = 'accepted';
+
+6.
+SELECT SUM(beds) AS Numero_Posti_Letto
+FROM stanze;
+
+GROUP BY
+
+7.
+SELECT SUM(price) AS somma_pagamento, status
+FROM pagamenti
+GROUP BY status;
+
+8.
+SELECT COUNT(id) AS Num_Volte_stanza_prenotata, stanza_id
+FROM prenotazioni
+GROUP BY stanza_id;
+
+JOIN
+
+9.
+SELECT prenotazioni.id AS numero_prenotazione, ospiti.name, ospiti.lastname 
+FROM ospiti
+INNER JOIN prenotazioni_has_ospiti ON ospiti.id = ospite_id
+INNER JOIN prenotazioni ON prenotazione_id = prenotazioni.id
+
+10.
+SELECT SUM(price) as Prezzi_Stanza_1_Piano
+FROM prenotazioni
+INNER JOIN pagamenti ON prenotazioni.id = pagamenti.prenotazione_id
+INNER JOIN stanze ON stanza_id = stanze.id
+WHERE floor = 1;
+
+11.
