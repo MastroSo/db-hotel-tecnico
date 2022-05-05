@@ -1,0 +1,80 @@
+TABELLA PRENOTAZIONE:
+
+CREATE TABLE [dbo].[Prenotazione]
+(
+    [Numero_Prenotazione] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Stanza_Prenotata] SMALLINT NOT NULL, 
+    [Data] DATE NOT NULL
+)
+
+TABELLA STANZA ESISTENTE
+
+CREATE TABLE [dbo].[Stanza Esistente]
+(
+    [Numero_Stanza] SMALLINT NOT NULL PRIMARY KEY, 
+    [Piano] TINYINT NOT NULL, 
+    [Num_Letti] TINYINT NOT NULL
+)
+
+TABELLA (PONTE) PRENOTAZIONE_STANZA_ESISTENTE
+
+CREATE TABLE [dbo].[Prenotazione_Stanza_Esistente] (
+    [Id_Stanza_Esistente] SMALLINT NOT NULL,
+    [Id_Prenotazione]     INT NOT NULL,
+    CONSTRAINT [chiave_ponte_Stanza_Esistente] FOREIGN KEY ([Id_Stanza_Esistente]) REFERENCES [dbo].[Stanza Esistente] ([Numero_Stanza]), 
+    CONSTRAINT [chiave_ponte_Prenotazione_Stanza_esistente] FOREIGN KEY ([id_Prenotazione]) REFERENCES [Prenotazione]([Numero_Prenotazione])
+);
+
+TABELLA OSPITE 
+
+CREATE TABLE [dbo].[Ospite]
+(
+    [Id] INT NOT NULL PRIMARY KEY	IDENTITY, 
+    [Nome] VARCHAR(50) NOT NULL, 
+    [Cognome] VARCHAR(50) NOT NULL, 
+    [DatadiNascita] DATE NOT NULL, 
+    [Tipo_di_Documento] VARCHAR(50) NOT NULL, 
+    [Numero_Documento] VARCHAR(50) NOT NULL
+)
+
+TABELLA(PONTE) PRENOTAZIONE_OSPITE
+
+CREATE TABLE [dbo].[Prenotazione_Ospite]
+(
+    [Id_Ospite] INT NOT NULL, 
+    [id_Prenotazione_Ospite] INT NOT NULL, 
+    CONSTRAINT [chiave_ponte_Ospite_Prenotazione] FOREIGN KEY ([Id_Ospite]) REFERENCES [Ospite]([id]), 
+    CONSTRAINT [chiave_ponte_Prenotazione_Ospite] FOREIGN KEY ([id_Prenotazione_Ospite]) REFERENCES [Prenotazione]([Numero_Prenotazione])
+)
+
+TABELLA CONFIGURAZIONE
+
+CREATE TABLE [dbo].[Configurazione]
+(
+    [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Titolo] VARCHAR(50) NOT NULL, 
+    [Descrizione] VARCHAR(150) NOT NULL, 
+    [id_Numero_di_Prenotazione] INT NOT NULL, 
+    CONSTRAINT [chiave_esterna_Configurazione_Prenotazione] FOREIGN KEY ([id_Numero_di_Prenotazione]) REFERENCES [Prenotazione]([Numero_Prenotazione])
+)
+
+TABELLA IMPORTO TOTALE
+
+CREATE TABLE [dbo].[Importo Totale]
+(
+    [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Totale] INT NOT NULL, 
+    [id_prenotazione ] INT NOT NULL, 
+    CONSTRAINT [chiave_esterna_Importo_Totale_Prenotazione] FOREIGN KEY ([id_prenotazione ]) REFERENCES [Prenotazione]([Numero_Prenotazione])
+)
+
+TABELLA PAGAMENTO
+
+CREATE TABLE [dbo].[Pagamento]
+(
+    [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Status] VARCHAR(10) NOT NULL, 
+    [Importo_Pagato] DECIMAL(6, 2) NOT NULL, 
+    [Id_Importo_Totale] INT NOT NULL, 
+    CONSTRAINT [chiave_esterna_Pagamento_Importo_Totale] FOREIGN KEY ([Id_Importo_Totale]) REFERENCES [Importo Totale]([id])
+)
